@@ -139,9 +139,9 @@ const Mutation = new GraphQLObjectType({
                 }
             },
             resolve(parent, args) {
-              return Todo.findByIdAndUpdate(args.id, {
-                $set: { name: args.name, type: args.type, priority: args.priority }
-              }).catch(err => new Error(err));
+                return Todo.findByIdAndUpdate(args.id, {
+                    $set: { name: args.name, type: args.type, priority: args.priority }
+                }).catch(err => new Error(err));
             }
         },
         addUser: {
