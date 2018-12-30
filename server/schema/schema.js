@@ -109,6 +109,41 @@ const Mutation = new GraphQLObjectType({
                 return todo.save();
             }
         },
+        removeTodo: {
+            type: TodoType,
+            args: {
+                id: { type: GraphQLNonNull(GraphQLString)}
+            },
+            resolve(parent, args){
+                let _removed = Todo.findByIdAndDelete(args.id).exec();
+                if(!_removed){
+                    throw new Error("Error While Deleting");
+                }
+                return _removed; 
+            }
+        },
+        updateTodo: {
+            type: TodoType,
+            args: {
+                id: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                name: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                type: {
+                    type: new GraphQLNonNull(GraphQLString)
+                },
+                priority: {
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            },
+            resolve(parent, args) {
+              return Todo.findByIdAndUpdate(args.id, {
+                $set: { name: args.name, type: args.type, priority: args.priority }
+              }).catch(err => new Error(err));
+            }
+        },
         addUser: {
             type: UserType,
             args: {
